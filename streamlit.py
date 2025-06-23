@@ -18,9 +18,9 @@ based on its characteristics.
 #     st.stop()
 
 # Load the pre-trained model
-rf_pickle = open("models/LRmodel.pkl", "rb")
-rf_model = pickle.load(rf_pickle)
-rf_pickle.close()
+lr_pickle = open("models/LRmodel.pkl", "rb")
+lr_model = pickle.load(lr_pickle)
+lr_pickle.close()
 
 
 # Prepare the form to collect user inputs
@@ -31,10 +31,10 @@ with st.form("property_inputs"):
     year_sold = st.selectbox("Year Sold", options=list(range(2000, 2025)))
 
     # Property Tax
-    property_tax = st.number_input("Annual Property Tax ($)", min_value=0, step=10)
+    property_tax = st.number_input("Annual Property Tax ($)", min_value=10, step=10)
 
     # Insurance
-    insurance = st.number_input("Annual Insurance Cost ($)", min_value=0, step=10)
+    insurance = st.number_input("Annual Insurance Cost ($)", min_value=10, step=10)
 
     # Bedrooms and Bathrooms
     beds = st.selectbox("Number of Bedrooms", options=[1, 2, 3, 4, 5,6,7,8,9,10])
@@ -44,7 +44,7 @@ with st.form("property_inputs"):
     sqft = st.number_input("Square Footage", min_value=100, step=10)
 
     # Year Built
-    year_built = st.selectbox("Year Built", options=list(range(1900, 2025)))
+    #year_built = st.selectbox("Year Built", options=list(range(1900, 2025)))
 
     # Lot Size
     lot_size = st.number_input("Lot Size (sq ft)", min_value=0, step=100)
@@ -77,12 +77,12 @@ if submitted:
 
     # Ensure input order matches training
     prediction_input = [[
-        year_sold, property_tax, insurance, beds, baths, sqft, year_built,
+        year_sold, property_tax, insurance, beds, baths, sqft, #year_built,
         lot_size, basement, popular, recession, property_age, property_type_Condo
     ]]
 
     # Make prediction
-    prediction = model.predict(prediction_input)
+    prediction = lr_model.predict(prediction_input)
 
     # Display result
     st.subheader("🏡 Predicted Property Price:")
@@ -97,7 +97,7 @@ if submitted:
         "beds": beds,
         "baths": baths,
         "sqft": sqft,
-        "year_built": year_built,
+        #"year_built": year_built,
         "lot_size": lot_size,
         "basement": basement,
         "popular": popular,
