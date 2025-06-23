@@ -1,11 +1,11 @@
-# credit_eligibility_application
+# real_estate_application
 This app has been built using Streamlit and deployed with Streamlit community cloud
 
-[Visit the app here](https://loan-application-app.streamlit.app/)
+[Visit the app here](https://real-estate-app-01.streamlit.app/)
 
 password - streamlit
 
-This application predicts whether someone is eligible for a loan based on inputs derived from the German Credit Risk dataset. The model aims to help users assess loan eligibility by leveraging machine learning predictions.
+This application estimates the price of a property. The model aims to help users assess the property price by leveraging machine learning.
 
 ## Features
 - User-friendly interface powered by Streamlit.
@@ -14,14 +14,13 @@ This application predicts whether someone is eligible for a loan based on inputs
 - Accessible via Streamlit Community Cloud.
 
 ## Dataset
-The application is trained on the **German Credit Risk dataset**, a widely used dataset for evaluating creditworthiness. It includes features like:
-- Age
-- Job
-- Housing status
-- Credit amount
-- Duration of credit
-- Purpose of loan
-- And other factors influencing credit risk.
+The application is trained dataset that includes features like:
+- Property Age
+- Bed
+- Bath
+- Basement
+- Year Sold
+- And other characteristic of a property.
 
 ## Technologies Used
 - **Streamlit**: For building the web application.
@@ -58,4 +57,4 @@ If you want to run the application locally, follow these steps:
    ```bash
    streamlit run app.py
 
-#### Thank you for using the Credit Eligibility Application! Feel free to share your feedback.
+#### Thank you for using the Real Estate Estimator Application! Feel free to share your feedback.
