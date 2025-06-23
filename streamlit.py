@@ -5,10 +5,10 @@ import pickle
 import streamlit as st
 
 # Set the page title and description
-st.title("Real Estate Price Predictor")
+st.title("Real Estate Price Estimator")
 st.write("""
-This app predicts price of a property 
-based on its characteristics.
+This app estimates the price of a Condo and Bungalow 
+based on their characteristics.
 """)
 
 # # Optional password protection (remove if not needed)
@@ -62,7 +62,7 @@ with st.form("property_inputs"):
     property_age = st.number_input("Property Age (years)", min_value=0, step=1)
 
     # Property Type
-    property_type = st.selectbox("Property Type", options=["Condo", "Detached"])
+    property_type = st.selectbox("Property Type", options=["Condo", "Bungalow"])
 
     # Submit button
     submitted = st.form_submit_button("Submit")
@@ -85,7 +85,7 @@ if submitted:
     prediction = lr_model.predict(prediction_input)
 
     # Display result
-    st.subheader("🏡 Predicted Property Price:")
+    st.subheader("🏡 Estimated Property Price:")
     st.success(f"${prediction[0]:,.2f}")
 
     # Optional: show processed input
