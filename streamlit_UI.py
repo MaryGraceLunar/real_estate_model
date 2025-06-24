@@ -85,4 +85,8 @@ if submitted:
         })
 
     st.caption("🧠 This prediction was made using a trained Linear Regression model.")
+    
+# Footer
+st.markdown("---")
+st.caption("Built by Mary Grace Lunar | Educational Use Only")
 
