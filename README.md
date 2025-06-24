@@ -16,8 +16,8 @@ This application estimates the price of a property. The model aims to help users
 ## Dataset
 The application is trained dataset that includes features like:
 - Property Age
-- Bed
-- Bath
+- Number of Bedromms
+- Number of Bathrooms
 - Basement
 - Year Sold
 - And other characteristic of a property.
@@ -29,11 +29,10 @@ The application is trained dataset that includes features like:
 - **Matplotlib** and **Seaborn**: For exploratory data analysis and visualization (if applicable).
 
 ## Model
-The predictive model is trained using the German Credit Risk dataset. It applies preprocessing steps like encoding categorical variables and scaling numerical features. The classification model used may include algorithms such as Logistic Regression, Random Forest, or XGBoost.
+The predictive model is trained using real estate dataset. The regression model used may include algorithm Random Forest, or Neural Network.
 
 ## Future Enhancements
-* Adding support for multiple datasets.
-* Incorporating explainability tools like SHAP to provide insights into predictions.
+* Extend the training and testing dataset to reflect the current market
 * Adding visualizations to better represent user input and model predictions.
 
 ## Installation (for local deployment)
@@ -41,7 +40,7 @@ If you want to run the application locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/credit_eligibility_application.git
+   git clone https://github.com/_your-username_/credit_eligibility_application.git
    cd credit_eligibility_application
 
 2. Create and activate a virtual environment:
