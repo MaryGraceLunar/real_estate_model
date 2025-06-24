@@ -1,7 +1,7 @@
 # real_estate_application
 This app has been built using Streamlit and deployed with Streamlit community cloud
 
-[Visit the app here](https://real-estate-app-01.streamlit.app/)
+[Visit the app here](https://real-estate-estimation-app-01x.streamlit.app/)
 
 password - streamlit
 
