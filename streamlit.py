@@ -4,89 +4,106 @@ import matplotlib.pyplot as plt
 import pickle
 import streamlit as st
 
-# Page setup
-st.set_page_config(page_title="🏠 Real Estate Price Estimator", layout="centered")
-
-# Title and intro
-st.title("🏠 Real Estate Price Estimator")
-st.markdown("""
-Welcome! This app estimates the price of a **Condo** or **Bungalow** 
-based on key property details you provide.
+# Set the page title and description
+st.title("Real Estate Price Estimator")
+st.write("""
+This app estimates the price of a Condo and Bungalow 
+based on their characteristics.
 """)
 
-# UX Hint
-st.caption("📌 Tip: Enter property details below and click **Submit** to get an estimated price.")
+# # Optional password protection (remove if not needed)
+# password_guess = st.text_input("Please enter your password?")
+# # this password is stores in streamlit secrets
+# if password_guess != st.secrets["password"]:
+#     st.stop()
 
-# Load model
-with open("models/LRmodel.pkl", "rb") as lr_pickle:
-    lr_model = pickle.load(lr_pickle)
+# Load the pre-trained model
+lr_pickle = open("models/LRmodel.pkl", "rb")
+lr_model = pickle.load(lr_pickle)
+lr_pickle.close()
 
-# --- Input Form ---
+
+# Prepare the form to collect user inputs
 with st.form("property_inputs"):
-    st.markdown("### 📋 Enter Property Details")
+    st.subheader("Enter Property Details")
 
-    col1, col2 = st.columns(2)
-    with col1:
-        year_sold = st.selectbox("Year Sold", options=list(range(2000, 2025)))
-        property_tax = st.number_input("Annual Property Tax ($)", min_value=10, step=10)
-        insurance = st.number_input("Annual Insurance Cost ($)", min_value=10, step=10)
-        sqft = st.number_input("Square Footage", min_value=100, step=10)
-        lot_size = st.number_input("Lot Size (sq ft)", min_value=0, step=100)
-        property_age = st.number_input("Property Age (years)", min_value=0, step=1)
+    # Year Sold
+    year_sold = st.selectbox("Year Sold", options=list(range(2000, 2025)))
 
-    with col2:
-        beds = st.selectbox("Number of Bedrooms", options=list(range(1, 11)))
-        baths = st.selectbox("Number of Bathrooms", options=list(range(1, 11)))
-        basement = st.selectbox("Basement", options=["No", "Yes"])
-        popular = st.selectbox("In a Popular Area?", options=["No", "Yes"])
-        recession = st.selectbox("Sold During Recession?", options=["No", "Yes"])
-        property_type = st.selectbox("Property Type", options=["Condo", "Bungalow"])
+    # Property Tax
+    property_tax = st.number_input("Annual Property Tax ($)", min_value=10, step=10)
 
-    submitted = st.form_submit_button("🚀 Estimate Price")
+    # Insurance
+    insurance = st.number_input("Annual Insurance Cost ($)", min_value=10, step=10)
 
-# --- Prediction Logic ---
+    # Bedrooms and Bathrooms
+    beds = st.selectbox("Number of Bedrooms", options=[1, 2, 3, 4, 5,6,7,8,9,10])
+    baths = st.selectbox("Number of Bathrooms", options=[1, 2, 3,4,5,6,7,8,9,10])
+
+    # Square Footage
+    sqft = st.number_input("Square Footage", min_value=100, step=10)
+
+    # Year Built
+    #year_built = st.selectbox("Year Built", options=list(range(1900, 2025)))
+
+    # Lot Size
+    lot_size = st.number_input("Lot Size (sq ft)", min_value=0, step=100)
+
+    # Basement
+    basement = st.selectbox("Has Basement?", options=["No", "Yes"])
+
+    # Popular Location
+    popular = st.selectbox("Is it in a popular area?", options=["No", "Yes"])
+
+    # Sold during Recession
+    recession = st.selectbox("Was it sold during a recession?", options=["No", "Yes"])
+
+    # Property Age
+    property_age = st.number_input("Property Age (years)", min_value=0, step=1)
+
+    # Property Type
+    property_type = st.selectbox("Property Type", options=["Condo", "Bungalow"])
+
+    # Submit button
+    submitted = st.form_submit_button("Submit")
+
+# Handle the dummy variables and make prediction
 if submitted:
-    # Encode inputs
+    # Convert categorical to binary
     basement = 1 if basement == "Yes" else 0
     popular = 1 if popular == "Yes" else 0
     recession = 1 if recession == "Yes" else 0
     property_type_Condo = 1 if property_type == "Condo" else 0
 
-    # Ensure feature order matches model
+    # Ensure input order matches training
     prediction_input = [[
-        year_sold, property_tax, insurance, beds, baths, sqft,
+        year_sold, property_tax, insurance, beds, baths, sqft, #year_built,
         lot_size, basement, popular, recession, property_age, property_type_Condo
     ]]
 
-    # Prediction
+    # Make prediction
     prediction = lr_model.predict(prediction_input)
 
     # Display result
-    st.markdown("---")
-    st.subheader("💰 Estimated Property Price")
-    st.success(f"Estimated Market Price: **${prediction[0]:,.2f}**")
+    st.subheader("🏡 Estimated Property Price:")
+    st.success(f"${prediction[0]:,.2f}")
 
-    # Display summary
-    st.markdown("---")
-    with st.expander("🔎 See Details of Your Inputs"):
-        st.json({
-            "Year Sold": year_sold,
-            "Property Tax": property_tax,
-            "Insurance": insurance,
-            "Bedrooms": beds,
-            "Bathrooms": baths,
-            "Square Footage": sqft,
-            "Lot Size": lot_size,
-            "Basement": bool(basement),
-            "Popular Location": bool(popular),
-            "Recession Period": bool(recession),
-            "Property Age": property_age,
-            "Property Type": "Condo" if property_type_Condo else "Bungalow"
-        })
+    # Optional: show processed input
+    st.subheader("Inputs Used for Prediction:")
+    st.json({
+        "year_sold": year_sold,
+        "property_tax": property_tax,
+        "insurance": insurance,
+        "beds": beds,
+        "baths": baths,
+        "sqft": sqft,
+        #"year_built": year_built,
+        "lot_size": lot_size,
+        "basement": basement,
+        "popular": popular,
+        "recession": recession,
+        "property_age": property_age,
+        "property_type_Condo": property_type_Condo
+    })
 
-    st.caption("🧠 This prediction was made using a trained Linear Regression model.")
-    
-# Footer
-st.markdown("---")
-st.caption("Built by Mary Grace Lunar | Educational Use Only")
 
