@@ -3,6 +3,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pickle
 import streamlit as st
+from src.models.predict_model import evaluate_model
+
 
 # Page setup
 st.set_page_config(page_title="🏠 Real Estate Price Estimator", layout="centered")
@@ -65,6 +67,20 @@ if submitted:
     st.markdown("---")
     st.subheader("💰 Estimated Property Price")
     st.success(f"Estimated Market Price: **${prediction[0]:,.2f}**")
+
+    #Display MAE
+    from sklearn.model_selection import train_test_split
+    from src.data.make_dataset import load_and_preprocess_data
+    from src.features.build_features import create_dummy_vars
+
+    # Load data and split for evaluation
+    df = load_and_preprocess_data("data/raw/final_realestate.csv")
+    X, y = create_dummy_vars(df)
+    _, X_test, _, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    mae = evaluate_model(lr_model, X_test, y_test)
+    st.caption(f"📉 Model Performance: Mean Absolute Error (MAE) = **${mae:,.2f}**")
+
 
     # Display summary
     st.markdown("---")
