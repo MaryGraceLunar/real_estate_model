@@ -27,22 +27,22 @@ with st.form("property_inputs"):
 
     col1, col2 = st.columns(2)
     with col1:
-        year_sold = st.selectbox("🗓️ Year Sold", options=list(range(2000, 2025)))
-        property_tax = st.number_input("💵 Annual Property Tax ($)", min_value=10, step=10)
-        insurance = st.number_input("🛡️ Annual Insurance Cost ($)", min_value=10, step=10)
-        sqft = st.number_input("📏 Square Footage", min_value=100, step=10)
-        lot_size = st.number_input("🌿 Lot Size (sq ft)", min_value=0, step=100)
-        property_age = st.number_input("🏗️ Property Age (years)", min_value=0, step=1)
+        year_sold = st.selectbox("Year Sold", options=list(range(2000, 2025)))
+        property_tax = st.number_input("Annual Property Tax ($)", min_value=10, step=10)
+        insurance = st.number_input("Annual Insurance Cost ($)", min_value=10, step=10)
+        sqft = st.number_input("Square Footage", min_value=100, step=10)
+        lot_size = st.number_input("Lot Size (sq ft)", min_value=0, step=100)
+        property_age = st.number_input("Property Age (years)", min_value=0, step=1)
 
     with col2:
-        beds = st.selectbox("🛏️ Number of Bedrooms", options=list(range(1, 11)))
-        baths = st.selectbox("🛁 Number of Bathrooms", options=list(range(1, 11)))
-        basement = st.selectbox("🏚️ Basement", options=["No", "Yes"])
-        popular = st.selectbox("📍 In a Popular Area?", options=["No", "Yes"])
-        recession = st.selectbox("📉 Sold During Recession?", options=["No", "Yes"])
-        property_type = st.selectbox("🏡 Property Type", options=["Condo", "Bungalow"])
+        beds = st.selectbox("Number of Bedrooms", options=list(range(1, 11)))
+        baths = st.selectbox("Number of Bathrooms", options=list(range(1, 11)))
+        basement = st.selectbox("Basement", options=["No", "Yes"])
+        popular = st.selectbox("In a Popular Area?", options=["No", "Yes"])
+        recession = st.selectbox("Sold During Recession?", options=["No", "Yes"])
+        property_type = st.selectbox("Property Type", options=["Condo", "Bungalow"])
 
-    submitted = st.form_submit_button("✨ Submit")
+    submitted = st.form_submit_button("🚀 Estimate Price")
 
 # --- Prediction Logic ---
 if submitted:
