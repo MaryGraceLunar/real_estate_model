@@ -34,6 +34,7 @@ The predictive model is trained using real estate dataset. The regression model 
 ## Future Enhancements
 * Extend the training and testing dataset to reflect the current market
 * Adding visualizations to better represent user input and model predictions.
+* Give user option to use other model like Random Forest. 
 
 ## Installation (for local deployment)
 If you want to run the application locally, follow these steps:
