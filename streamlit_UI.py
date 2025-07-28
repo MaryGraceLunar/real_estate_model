@@ -7,21 +7,24 @@ from src.models.predict_model import evaluate_model
 
 
 # Page setup
-st.set_page_config(page_title="🏠 Real Estate Price Estimator", layout="centered")
+st.set_page_config(page_title="Real Estate Price Estimator", layout="centered")
 
 # Title and intro
-st.title("🏠 Real Estate Price Estimator")
+st.title("Real Estate Price Estimator")
 st.markdown("""
-Welcome! This app estimates the price of a **Condo** or **Bungalow** 
-based on key property details you provide.
+Welcome, data explorers!
+This app leverages a **Linear Regression model** to estimate the market price of a **Condo** or **Bungalow**, based on the property characteristics you provide below.
 """)
 
 # UX Hint
-st.caption("📌 Tip: Enter property details below and click **Submit** to get an estimated price.")
+st.caption("Tip: Enter the property specs and let the model estimate its market value using historical data patterns.")
 
-# Load model
+# Load model and MAE
 with open("models/LRmodel.pkl", "rb") as lr_pickle:
     lr_model = pickle.load(lr_pickle)
+
+with open("models/LR_MAE.pkl", "rb") as mae_pickle:
+    stored_mae = pickle.load(mae_pickle)
 
 # --- Input Form ---
 with st.form("property_inputs"):
@@ -54,7 +57,6 @@ if submitted:
     recession = 1 if recession == "Yes" else 0
     property_type_Condo = 1 if property_type == "Condo" else 0
 
-    # Ensure feature order matches model
     prediction_input = [[
         year_sold, property_tax, insurance, beds, baths, sqft,
         lot_size, basement, popular, recession, property_age, property_type_Condo
@@ -69,38 +71,15 @@ if submitted:
     st.success(f"Estimated Market Price: **${prediction[0]:,.2f}**")
 
     #Display MAE
-    from sklearn.model_selection import train_test_split
-    from src.data.make_dataset import load_and_preprocess_data
-    from src.features.build_features import create_dummy_vars
-
-    # Load data and split for evaluation
-    df = load_and_preprocess_data("data/raw/final_realestate.csv")
-    X, y = create_dummy_vars(df)
-    _, X_test, _, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    mae = evaluate_model(lr_model, X_test, y_test)
-    st.caption(f"📉 Model Performance: Mean Absolute Error (MAE) = **${mae:,.2f}**")
-
-
-    # Display summary
-    st.markdown("---")
-    with st.expander("🔎 See Details of Your Inputs"):
-        st.json({
-            "Year Sold": year_sold,
-            "Property Tax": property_tax,
-            "Insurance": insurance,
-            "Bedrooms": beds,
-            "Bathrooms": baths,
-            "Square Footage": sqft,
-            "Lot Size": lot_size,
-            "Basement": bool(basement),
-            "Popular Location": bool(popular),
-            "Recession Period": bool(recession),
-            "Property Age": property_age,
-            "Property Type": "Condo" if property_type_Condo else "Bungalow"
-        })
-
-    st.caption("🧠 This prediction was made using a trained Linear Regression model.")
+    st.caption(f"Model Performance: Mean Absolute Error (MAE) = **${stored_mae:,.2f}**, evaluated on holdout test data.")
+    
+    with st.expander("Model Info"):
+        st.markdown("""
+        - **Model**: Linear Regression  
+        - **Target**: Property sale price  
+        - **Features Used**: Year sold, taxes, sqft, bedrooms, etc.  
+        - **Evaluation Metric**: MAE on 20% holdout test set
+        """)
     
 # Footer
 st.markdown("---")
